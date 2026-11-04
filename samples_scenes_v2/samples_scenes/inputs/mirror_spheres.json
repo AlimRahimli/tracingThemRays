@@ -1,0 +1,99 @@
+{
+  "Scene": {
+    "BackgroundColor": "0 0 0",
+    "ShadowRayEpsilon": "1e-3",
+    "MaxRecursionDepth": "6",
+    "Cameras": {
+      "Camera": {
+        "_id": "1",
+        "Position": "0 0 0",
+        "Gaze": "0 0 -1",
+        "Up": "0 1 0",
+        "NearPlane": "-0.5 0.5 -0.5 0.5",
+        "NearDistance": "1",
+        "ImageResolution": "1024 1024",
+        "ImageName": "mirror_spheres.ppm"
+      }
+    },
+    "Lights": {
+      "AmbientLight": "12.5 12.5 12.5",
+      "PointLight": {
+        "_id": "1",
+        "Position": "3 3 0",
+        "Intensity": "7200 7200 7200"
+      }
+    },
+    "Materials": {
+      "Material": [
+        {
+          "_id": "1",
+          "_type": "mirror",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "1 0 0",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "1 1 1",
+          "PhongExponent": "50"
+        },
+        {
+          "_id": "2",
+          "_type": "mirror",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0 1 0",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "1 1 1",
+          "PhongExponent": "50"
+        },
+        {
+          "_id": "3",
+          "_type": "mirror",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0 0 1",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "1 1 1",
+          "PhongExponent": "50"
+        },
+        {
+          "_id": "4",
+          "_type": "mirror",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "1 1 0",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "1 1 1",
+          "PhongExponent": "50"
+        }
+      ]
+    },
+    "VertexData": {
+      "_data": "-1 -1 -5 1 -1 -5 1 1 -5 -1 1 -5",
+      "_type": "xyz"
+    },
+    "Objects": {
+      "Sphere": [
+        {
+          "_id": "1",
+          "Material": "1",
+          "Center": "1",
+          "Radius": "1"
+        },
+        {
+          "_id": "2",
+          "Material": "2",
+          "Center": "2",
+          "Radius": "1"
+        },
+        {
+          "_id": "3",
+          "Material": "3",
+          "Center": "3",
+          "Radius": "1"
+        },
+        {
+          "_id": "4",
+          "Material": "4",
+          "Center": "4",
+          "Radius": "1"
+        }
+      ]
+    }
+  }
+}

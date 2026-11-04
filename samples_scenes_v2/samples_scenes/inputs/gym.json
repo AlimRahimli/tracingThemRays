@@ -1,0 +1,285 @@
+{
+  "Scene": {
+    "BackgroundColor": "0 0 0",
+    "ShadowRayEpsilon": "1e-3",
+    "MaxRecursionDepth": "6",
+    "Cameras": {
+      "Camera": [
+        {
+          "_id": "1",
+          "Position": "0 10 15",
+          "Gaze": "0 0 -1",
+          "Up": "0 1 0",
+          "NearPlane": "-1.25 1.25 -1.4 0.6",
+          "NearDistance": "1",
+          "ImageResolution": "1000 800",
+          "NumSamples": "1",
+          "ImageName": "gym.ppm"
+        },
+        {
+          "_id": "2",
+          "Position": "15 10 15",
+          "Gaze": "-0.371391 0 -0.928477",
+          "Up": "0 1 0",
+          "NearPlane": "-1.346291 1.346291 -1.4 0.6",
+          "NearDistance": "1.077033",
+          "ImageResolution": "1000 800",
+          "NumSamples": "1",
+          "ImageName": "gym_reverse.ppm"
+        }
+      ]
+    },
+    "Lights": {
+      "AmbientLight": "25 25 25",
+      "PointLight": [
+        {
+          "_id": "1",
+          "Position": "14 30 20",
+          "Intensity": "100000 100000 100000"
+        },
+        {
+          "_id": "2",
+          "Position": "-14 30 20",
+          "Intensity": "100000 100000 100000"
+        }
+      ]
+    },
+    "Materials": {
+      "Material": [
+        {
+          "_id": "1",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0.45 0.30 0.18",
+          "SpecularReflectance": "0.2 0.2 0.2",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "12"
+        },
+        {
+          "_id": "2",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0.07 0.22 0.6",
+          "SpecularReflectance": "0.9 0.9 0.9",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "80"
+        },
+        {
+          "_id": "3",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0.26 0.26 0.29",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "0.5 0.5 0.5",
+          "PhongExponent": "120"
+        },
+        {
+          "_id": "4",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "0.06 0.06 0.06",
+          "SpecularReflectance": "0.7 0.7 0.7",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "100"
+        },
+        {
+          "_id": "5",
+          "_type": "mirror",
+          "AmbientReflectance": "1 1 1",
+          "DiffuseReflectance": "1 1 1",
+          "SpecularReflectance": "1 1 1",
+          "MirrorReflectance": "1 1 1",
+          "PhongExponent": "50"
+        },
+        {
+          "_id": "6",
+          "AmbientReflectance": "0 0 0",
+          "DiffuseReflectance": "0.35 0.22 0.12",
+          "SpecularReflectance": "0.15 0.15 0.15",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "12"
+        },
+        {
+          "_id": "7",
+          "AmbientReflectance": "0 0 0",
+          "DiffuseReflectance": "0.0 0.0 0.0",
+          "SpecularReflectance": "0 0 0",
+          "MirrorReflectance": "0 0 0",
+          "PhongExponent": "12"
+        }
+      ]
+    },
+    "VertexData": {
+      "_data": "-100 0 100 100 0 100 100 0 -100 -100 0 -100 -200 0 -40 200 0 -40 200 10 -40 -200 10 -40 -7 2.5 -3 7 2.5 -3 -9 5 -6 9 5 -6 8.1 6 -5.1 -8.1 6 -5.1 -9 5 0 9 5 0 8.1 6 -0.9 -8.1 6 -0.9 0 0 -11 0 0 0 -6.0 1.1 2.0 -7.5 1.1 2.0 -4.5 1.1 2.0 2.0 1.1 4.0 2.0 1.1 2.5 2.0 1.1 5.5 0.0 1.1 6.0 -1.061 1.1 4.939 1.061 1.1 7.061 0 0 40 -18 0 0 -200 0 -10.8 200 0 -10.8 200 0.6 -10.8 -200 0.6 -10.8 -200 0.6 -10.8 200 0.6 -10.8 200 0.6 -10.4 -200 0.6 -10.4 -17.8 0 -50 -17.8 0 50 -17.8 0.6 50 -17.8 0.6 -50 -17.8 0.6 -50 -17.8 0.6 50 -17.4 0.6 50 -17.4 0.6 -50 -200 0 40 200 0 40 200 0.6 40 -200 0.6 40 -200 0.6 40 200 0.6 40 200 0.6 39.6 -200 0.6 39.6",
+      "_type": "xyz"
+    },
+    "Objects": {
+      "Plane": [
+        {
+          "Material": "1",
+          "Center": "20",
+          "Normal": "0 1 0"
+        },
+        {
+          "Material": "5",
+          "Center": "19",
+          "Normal": "0 0 1"
+        },
+        {
+          "Material": "6",
+          "Center": "30",
+          "Normal": "0 0 -1"
+        },
+        {
+          "Material": "5",
+          "Center": "31",
+          "Normal": "1 0 0"
+        }
+      ],
+      "Cylinder": [
+        {
+          "_id": "bench_leg_L",
+          "Material": "3",
+          "Center": "9",
+          "Axis": "0 1 0",
+          "Radius": "0.25",
+          "Height": "5"
+        },
+        {
+          "_id": "bench_leg_R",
+          "Material": "3",
+          "Center": "10",
+          "Axis": "0 1 0",
+          "Radius": "0.25",
+          "Height": "5"
+        },
+        {
+          "_id": "db1_handle",
+          "Material": "3",
+          "Center": "21",
+          "Axis": "1 0 0",
+          "Radius": "0.25",
+          "Height": "3.0"
+        },
+        {
+          "_id": "db1_plate_L",
+          "Material": "4",
+          "Center": "22",
+          "Axis": "1 0 0",
+          "Radius": "1.10",
+          "Height": "0.50"
+        },
+        {
+          "_id": "db1_plate_R",
+          "Material": "4",
+          "Center": "23",
+          "Axis": "1 0 0",
+          "Radius": "1.10",
+          "Height": "0.50"
+        },
+        {
+          "_id": "db2_handle",
+          "Material": "3",
+          "Center": "24",
+          "Axis": "0 0 1",
+          "Radius": "0.25",
+          "Height": "3.0"
+        },
+        {
+          "_id": "db2_plate_N",
+          "Material": "4",
+          "Center": "25",
+          "Axis": "0 0 1",
+          "Radius": "1.10",
+          "Height": "0.50"
+        },
+        {
+          "_id": "db2_plate_F",
+          "Material": "4",
+          "Center": "26",
+          "Axis": "0 0 1",
+          "Radius": "1.10",
+          "Height": "0.50"
+        },
+        {
+          "_id": "db3_handle",
+          "Material": "3",
+          "Center": "27",
+          "Axis": "0.707107 0 0.707107",
+          "Radius": "0.25",
+          "Height": "3.0"
+        },
+        {
+          "_id": "db3_plate_A",
+          "Material": "4",
+          "Center": "28",
+          "Axis": "0.707107 0 0.707107",
+          "Radius": "1.10",
+          "Height": "0.50"
+        },
+        {
+          "_id": "db3_plate_B",
+          "Material": "4",
+          "Center": "29",
+          "Axis": "0.707107 0 0.707107",
+          "Radius": "1.10",
+          "Height": "0.50"
+        }
+      ],
+      "Mesh": [
+        {
+          "_id": "cuboid",
+          "Material": "4",
+          "Faces": {
+            "_data": "11 13 12 11 14 13 15 16 17 15 17 18 11 15 18 11 18 14 12 17 16 12 13 17 11 12 16 11 16 15 14 17 13 14 18 17",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_back_vertical",
+          "Material": "7",
+          "Faces": {
+            "_data": "32 33 34 32 34 35",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_back_top",
+          "Material": "7",
+          "Faces": {
+            "_data": "36 37 38 36 38 39",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_left_vertical",
+          "Material": "7",
+          "Faces": {
+            "_data": "40 41 42 40 42 43",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_left_top",
+          "Material": "7",
+          "Faces": {
+            "_data": "44 45 46 44 46 47",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_front_vertical",
+          "Material": "7",
+          "Faces": {
+            "_data": "49 48 51 49 51 50",
+            "_type": "triangle"
+          }
+        },
+        {
+          "_id": "plinth_front_top",
+          "Material": "7",
+          "Faces": {
+            "_data": "52 53 54 52 54 55",
+            "_type": "triangle"
+          }
+        }
+      ]
+    }
+  }
+}
