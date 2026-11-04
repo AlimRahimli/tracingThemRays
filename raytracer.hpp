@@ -11,15 +11,13 @@ struct Ray
     public: Ray(Vec3f, Vec3f);
 };
 
-struct HitRecord
+struct hitRecord
 {
-
-    bool hit; //did an intersection occur for t > 0?
-    float t; //hit distance
-    Vec3f point; //intersection coordinate
-    Vec3f normal; //surface unit normal at intersection point
-    int materialID;
-
+    float time = 1e30f;
+    Vec3f point;
+    Vec3f normal;
+    int materialId = -1;
+    
 };
 
 Vec3f normalize(Vec3f v);
