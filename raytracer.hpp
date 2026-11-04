@@ -13,21 +13,38 @@ struct Ray
 
 struct hitRecord
 {
-    float time = 1e30f;
-    Vec3f point;
-    Vec3f normal;
-    int materialId = -1;
-    
+
+    float time = 1e30f; //hit distance/time
+    Vec3f point; //intersection coordinate
+    Vec3f normal; //surface unit normal at intersection point
+    int materialID = -1;
+
 };
 
 Vec3f normalize(Vec3f v);
 
 Vec3f cross(Vec3f v, Vec3f u);
 
-Vec3f operator*(int i, Vec3f v);
+//I removed int overload because cpp automatically converts ints to floats anyways
 
-Vec3f operator*(float i, Vec3f v);
+inline Vec3f operator*(float f, Vec3f v){
+    Vec3f vector;
+    vector.x = v.x*f; vector.y = v.y*f; vector.z = v.z*f;
+    return vector;
+}
 
+inline Vec3f operator*(Vec3f v, float f) {
+    return f * v;
+}
+
+inline Vec3f operator*(Vec3f v, Vec3f u) {
+    Vec3f vector;
+    vector.x = v.x * u.x; vector.y = v.y * u.y; vector.z = v.z * u.z;
+    return vector;
+}
+
+
+//need to implement operator+/-(vec3f, int/float)?
 Vec3f operator+(Vec3f v, Vec3f i);
 
 Vec3f operator-(Vec3f v, Vec3f i);
@@ -36,10 +53,13 @@ float dot(Vec3f v, Vec3f u);
 
 float length(Vec3f v);
 
+
+//I overloaded operator*() as well
+//so this function is unnecessary now, I am delegating the decision to remove it to you
 Vec3f componentWiseMult(Vec3f v, Vec3f u);
 
 Vec3f Vec3iToVec3f(Vec3i v); //Cast Vec3i into Vec3f
 
-bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hit, bool isShadowRay);
+bool intersectScene(const Scene& scene, const Ray& ray, hitRecord& hit, bool isShadowRay);
 
 #endif

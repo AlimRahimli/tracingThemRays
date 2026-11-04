@@ -1,6 +1,7 @@
 #include "scene_io.h"
 #include "raytracer.hpp"
 
+
 #include <iostream>
 
 void preprocessScene(Scene& scene){

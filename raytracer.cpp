@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
 Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
 {
-    HitRecord hit;
+    hitRecord hit;
 
     if(!intersectScene(scene, ray, hit, false))
     {
@@ -105,12 +105,12 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         float distance = length(lightUnnormal);
         Vec3f lightNormal = normalize(lightUnnormal);
 
-        HitRecord shadowHit;
+        hitRecord shadowHit;
         Ray shadowRay(hit.point + scene.shadowRayEpsilon * hit.normal, lightNormal);
         
         Vec3f view = -1 * ray.direction;
 
-        if(!intersectScene(scene, shadowRay, shadowHit, true) || shadowHit.t >= distance)
+        if(!intersectScene(scene, shadowRay, shadowHit, true) || shadowHit.time >= distance)
         {
             Vec3f irradiance = (1/(distance * distance)) * light.intensity;
             Vec3f compDiffuse = componentWiseMult(material.diffuseReflectance, irradiance);
