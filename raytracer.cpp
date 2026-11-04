@@ -86,7 +86,29 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
 
     Vec3f ambientApplied = componentWiseMult(material.ambientReflectance, scene.ambientLight);
 
-    return ambientApplied;
+    Vec3f diffuseApplied;
+
+    for(PointLight light : scene.pointLights)
+    {
+        Vec3f lightUnnormal = light.position - hit.point;
+        float distance = length(lightUnnormal);
+        Vec3f lightNormal = normalize(lightUnnormal);
+
+        HitRecord shadowHit;
+        Ray shadowRay(hit.point + scene.shadowRayEpsilon * lightNormal, lightNormal);
+        
+        if(!intersectScene(scene, shadowRay, shadowHit, true) && shadowHit.t < distance)
+        {
+            Vec3f irradiance = (1/(distance * distance)) * light.intensity;
+            Vec3f diffuse = 
+                std::max(0.0f, (dot(hit.normal, lightNormal))) 
+                * componentWiseMult(material.diffuseReflectance, irradiance);
+            
+            diffuseApplied = diffuseApplied + diffuse;
+        }
+
+        return ambientApplied + diffuseApplied;
+    }
 }
 
 Vec3i Clamp(Vec3f xyz)
