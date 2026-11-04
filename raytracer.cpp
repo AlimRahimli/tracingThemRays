@@ -2,6 +2,8 @@
 #include "scene_io.h"
 
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 
 struct CameraBasis {
     
@@ -34,6 +36,9 @@ struct ImagePlane {
     }
 };
 
+Vec3f computeColor(const Scene& scene, const Ray& ray, int depth);
+Vec3i Clamp(Vec3f xyz);
+
 int main(int argc, char* argv[])
 {
     if(argc != 2)
@@ -43,13 +48,14 @@ int main(int argc, char* argv[])
     }
 
     Scene scene;
-    int camNo = 1;
+    //int camNo = 1;
     loadSceneFromJson(argv[1], scene);
 
-    for(Camera cam : scene.cameras)
+    for(const Camera& cam : scene.cameras)
     {
         std::vector<Vec3i> pixelmap;
-        std::string filename = argv[1] + "Cam" + std::to_string(camNo++);
+        pixelmap.reserve(cam.imageWidth * cam.imageHeight);
+        //std::string filename = argv[1] + "Cam" + std::to_string(camNo++);
 
         CameraBasis camBasis(cam);
         ImagePlane imgPlane(cam, camBasis);
@@ -69,7 +75,7 @@ int main(int argc, char* argv[])
             }
         }
 
-        writePPM(filename, cam.imageWidth, cam.imageHeight, pixelmap);
+        writePPM(cam.imageName, cam.imageWidth, cam.imageHeight, pixelmap);
     }
 }
 
@@ -77,9 +83,13 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
 {
     HitRecord hit;
 
-    if(!intersectScene(scene, ray, hit, false) && depth == 0)
+    if(!intersectScene(scene, ray, hit, false))
     {
-        return Vec3iToVec3f(scene.backgroundColor);
+        if(depth == 0)
+            return Vec3iToVec3f(scene.backgroundColor);
+        
+        Vec3f zero;
+        return zero;
     }
 
     Material material = scene.materials[hit.materialID];
@@ -89,43 +99,46 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
     Vec3f diffuseApplied;
     Vec3f specularApplied;
 
-    for(PointLight light : scene.pointLights)
+    for(const PointLight& light : scene.pointLights)
     {
         Vec3f lightUnnormal = light.position - hit.point;
         float distance = length(lightUnnormal);
         Vec3f lightNormal = normalize(lightUnnormal);
 
         HitRecord shadowHit;
-        Ray shadowRay(hit.point + scene.shadowRayEpsilon * lightNormal, lightNormal);
+        Ray shadowRay(hit.point + scene.shadowRayEpsilon * hit.normal, lightNormal);
         
-        if(!intersectScene(scene, shadowRay, shadowHit, true) && shadowHit.t < distance)
+        Vec3f view = -1 * ray.direction;
+
+        if(!intersectScene(scene, shadowRay, shadowHit, true) || shadowHit.t >= distance)
         {
             Vec3f irradiance = (1/(distance * distance)) * light.intensity;
-            Vec3f comp = componentWiseMult(material.diffuseReflectance, irradiance);
-
+            Vec3f compDiffuse = componentWiseMult(material.diffuseReflectance, irradiance);
+            
             Vec3f diffuse = 
-                std::max(0.0f, (dot(hit.normal, lightNormal))) * comp;
+            std::max(0.0f, (dot(hit.normal, lightNormal))) * compDiffuse;
             
             diffuseApplied = diffuseApplied + diffuse;
-
-            Vec3f view = -1 * ray.direction;
+            
             Vec3f halfwayVector = normalize(view + lightNormal);
-
-            Vec3f specular = pow(std::max(0.0f, dot(hit.normal, halfwayVector)), material.phongExponent) * comp;
+            
+            Vec3f compSpecular = componentWiseMult(material.specularReflectance, irradiance);
+            Vec3f specular = pow(std::max(0.0f, dot(hit.normal, halfwayVector)), material.phongExponent) * compSpecular;
             specularApplied = specularApplied + specular;
         }
-
-        return ambientApplied + diffuseApplied + specularApplied;
     }
+
+    if (material.isMirror && depth < scene.maxRecursionDepth)
+        return ambientApplied + diffuseApplied + specularApplied;
 }
 
 Vec3i Clamp(Vec3f xyz)
 {
     Vec3i rgb;
 
-    rgb.r = static_cast<int>(std::round(std::max(255.0f, std::min(0.0f, xyz.x))));
-    rgb.g = static_cast<int>(std::round(std::max(255.0f, std::min(0.0f, xyz.y))));
-    rgb.b = static_cast<int>(std::round(std::max(255.0f, std::min(0.0f, xyz.z))));
+    rgb.r = static_cast<int>(std::round(std::min(255.0f, std::max(0.0f, xyz.x))));
+    rgb.g = static_cast<int>(std::round(std::min(255.0f, std::max(0.0f, xyz.y))));
+    rgb.b = static_cast<int>(std::round(std::min(255.0f, std::max(0.0f, xyz.z))));
 
     return rgb;
 }
