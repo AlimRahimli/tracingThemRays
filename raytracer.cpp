@@ -87,6 +87,7 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
     Vec3f ambientApplied = componentWiseMult(material.ambientReflectance, scene.ambientLight);
 
     Vec3f diffuseApplied;
+    Vec3f specularApplied;
 
     for(PointLight light : scene.pointLights)
     {
@@ -100,14 +101,21 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         if(!intersectScene(scene, shadowRay, shadowHit, true) && shadowHit.t < distance)
         {
             Vec3f irradiance = (1/(distance * distance)) * light.intensity;
+            Vec3f comp = componentWiseMult(material.diffuseReflectance, irradiance);
+
             Vec3f diffuse = 
-                std::max(0.0f, (dot(hit.normal, lightNormal))) 
-                * componentWiseMult(material.diffuseReflectance, irradiance);
+                std::max(0.0f, (dot(hit.normal, lightNormal))) * comp;
             
             diffuseApplied = diffuseApplied + diffuse;
+
+            Vec3f view = -1 * ray.direction;
+            Vec3f halfwayVector = normalize(view + lightNormal);
+
+            Vec3f specular = pow(std::max(0.0f, dot(hit.normal, halfwayVector)), material.phongExponent) * comp;
+            specularApplied = specularApplied + specular;
         }
 
-        return ambientApplied + diffuseApplied;
+        return ambientApplied + diffuseApplied + specularApplied;
     }
 }
 
