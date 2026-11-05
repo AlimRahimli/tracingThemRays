@@ -62,4 +62,16 @@ Vec3f Vec3iToVec3f(Vec3i v); //Cast Vec3i into Vec3f
 
 bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hit, bool isShadowRay);
 
+
+
+void preprocessScene(Scene& scene);
+
+bool intersectPlane(const Ray& ray, const Plane& plane, const std::vector<Vec3f>& vertices, HitRecord& hitRecord);
+
+bool intersectSphere(const Ray& ray, const Sphere& sphere, const std::vector<Vec3f>& vertices, HitRecord& hitRecord);
+
+float findDet(const float& a, const float& b, const float& c, const float& d, const float& e,
+            const float& f, const float& g, const float& h, const float& i);
+
+bool intersectTriangle(const Ray& ray, const Triangle& triangle, const std::vector<Vec3f>& vertices, const bool& isShadowRay, HitRecord& hitRecord);
 #endif

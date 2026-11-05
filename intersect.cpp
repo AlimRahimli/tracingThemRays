@@ -77,3 +77,62 @@ bool intersectSphere(const Ray& ray, const Sphere& sphere, const std::vector<Vec
     }
     return false;
 }
+
+float findDet(const float& a, const float& b, const float& c, const float& d, const float& e,
+            const float& f, const float& g, const float& h, const float& i){
+                return a*(e*i-h*f)+b*(g*f-d*i)+c*(d*h-e*g);
+}
+
+bool intersectTriangle(const Ray& ray, const Triangle& triangle, const std::vector<Vec3f>& vertices, const bool& isShadowRay, HitRecord& hitRecord){
+    Vec3f D = ray.direction;
+    Vec3f O = ray.origin;
+    Vec3f n = triangle.normal;
+
+    Vec3f a = vertices[triangle.v0];
+    Vec3f b = vertices[triangle.v1];
+    Vec3f c = vertices[triangle.v2];
+    
+    float gamma;
+    float beta;
+    float detA;
+    float t;
+
+    if(!isShadowRay){
+        if(dot(D, n) > 0){
+            return false;
+        }
+    }
+
+    detA = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-c.x, a.y-c.y, a.z-c.z, D.x, D.y, D.z);
+    if(std::fabs(detA) < 1e-7f){
+        return false;
+    }
+
+    beta = findDet(a.x-O.x, a.y-O.y, a.z-O.z, a.x-c.x, a.y-c.y, a.z-c.z, D.x, D.y, D.z) / detA;
+    if(beta < 1e-7f){
+        return false;
+    }
+
+    gamma = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-O.x, a.y-O.y, a.z-O.z, D.x, D.y, D.z) / detA;
+    if(gamma < 1e-7f){
+        return false;
+    }
+
+    if(gamma+beta > 1.0f + 1e-7f){
+        return false;
+    }
+
+    t = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-c.x, a.y-c.y, a.z-c.z, a.x-O.x, a.y-O.y, a.z-O.z) / detA;
+
+    if((t > 0) && (t < hitRecord.time)){
+        Vec3f Pt = O + D*t;
+
+        hitRecord.time = t;
+        hitRecord.normal =  triangle.normal;
+        hitRecord.materialID = triangle.materialId;
+        hitRecord.point = Pt;
+        return true;
+    }
+    return false;
+}
+
