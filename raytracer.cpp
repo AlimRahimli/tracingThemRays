@@ -128,8 +128,17 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         }
     }
 
+    Vec3f color = ambientApplied + diffuseApplied + specularApplied;
+
     if (material.isMirror && depth < scene.maxRecursionDepth)
-        return ambientApplied + diffuseApplied + specularApplied;
+    {
+        Vec3f reflectionDir = normalize(ray.direction - 2 * (dot(ray.direction, hit.normal) * hit.normal));
+        Ray reflectionRay(hit.point + scene.shadowRayEpsilon * hit.normal, reflectionDir);
+        Vec3f mirror = componentWiseMult(computeColor(scene, reflectionRay, ++depth), material.mirrorReflectance);
+        color = color + mirror;
+    }
+    
+    return color;
 }
 
 Vec3i Clamp(Vec3f xyz)
