@@ -62,7 +62,7 @@ Vec3f Vec3iToVec3f(Vec3i v); //Cast Vec3i into Vec3f
 
 bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hit, bool isShadowRay);
 
-
+bool intersectCylinder(const Ray& ray, const Cylinder& cylinder, const std::vector<Vec3f>& vertices, HitRecord& hitRecord);
 
 void preprocessScene(Scene& scene);
 
