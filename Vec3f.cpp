@@ -9,7 +9,7 @@ Vec3f normalize(Vec3f v){
     Vec3f vector;
     float howBig = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     
-    if(howBig < 1e-7f){vector.x = 0; vector.y = 0; vector.z = 0; return vector;}
+    if(howBig < 1e-15f){vector.x = 0; vector.y = 0; vector.z = 0; return vector;}
     vector.x = v.x/howBig; vector.y = v.y/howBig; vector.z = v.z/howBig;
     return vector;
     

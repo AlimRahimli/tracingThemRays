@@ -104,27 +104,27 @@ bool intersectTriangle(const Ray& ray, const Triangle& triangle, const std::vect
     }
 
     detA = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-c.x, a.y-c.y, a.z-c.z, D.x, D.y, D.z);
-    if(std::fabs(detA) < 1e-7f){
+    if(std::fabs(detA) < 1e-15f){
         return false;
     }
 
     beta = findDet(a.x-O.x, a.y-O.y, a.z-O.z, a.x-c.x, a.y-c.y, a.z-c.z, D.x, D.y, D.z) / detA;
-    if(beta < -1e-7f){
+    if(beta < -1e-15f){
         return false;
     }
 
     gamma = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-O.x, a.y-O.y, a.z-O.z, D.x, D.y, D.z) / detA;
-    if(gamma < -1e-7f){
+    if(gamma < -1e-10f){
         return false;
     }
 
-    if(gamma+beta > 1.0f + 1e-7f){
+    if(gamma+beta > 1.0f + 1e-15f){
         return false;
     }
 
     t = findDet(a.x-b.x, a.y-b.y, a.z-b.z, a.x-c.x, a.y-c.y, a.z-c.z, a.x-O.x, a.y-O.y, a.z-O.z) / detA;
 
-    if((t > 0) && (t < hitRecord.time)){
+    if((t > 0.0f) && (t < hitRecord.time)){
         Vec3f Pt = O + D*t;
 
         hitRecord.time = t;
