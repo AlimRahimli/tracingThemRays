@@ -11,7 +11,7 @@ struct Ray
     public: Ray(Vec3f, Vec3f);
 };
 
-struct hitRecord
+struct HitRecord
 {
 
     float time = 1e30f; //hit distance/time
@@ -60,6 +60,6 @@ Vec3f componentWiseMult(Vec3f v, Vec3f u);
 
 Vec3f Vec3iToVec3f(Vec3i v); //Cast Vec3i into Vec3f
 
-bool intersectScene(const Scene& scene, const Ray& ray, hitRecord& hit, bool isShadowRay);
+bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hit, bool isShadowRay);
 
 #endif

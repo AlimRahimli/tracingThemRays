@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
 Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
 {
-    hitRecord hit;
+    HitRecord hit;
 
     if(!intersectScene(scene, ray, hit, false))
     {
@@ -105,7 +105,7 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         float distance = length(lightUnnormal);
         Vec3f lightNormal = normalize(lightUnnormal);
 
-        hitRecord shadowHit;
+        HitRecord shadowHit;
         Ray shadowRay(hit.point + scene.shadowRayEpsilon * hit.normal, lightNormal);
         
         Vec3f view = -1 * ray.direction;
