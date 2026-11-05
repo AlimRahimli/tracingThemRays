@@ -230,6 +230,58 @@ bool intersectCylinder(const Ray& ray, const Cylinder& cylinder, const std::vect
 
 
 
-bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hit, bool isShadowRay){
-    
+bool intersectScene(const Scene& scene, const Ray& ray, HitRecord& hitRecord, bool isShadowRay){
+    bool hit = false;
+    if(!isShadowRay){
+        hitRecord.time = 1e30f;
+    }
+
+    for (const Cylinder& cylinder : scene.cylinders){
+        if(intersectCylinder(ray, cylinder, scene.vertices, hitRecord)){
+            if(isShadowRay){
+                return true;
+            }
+            hit = true;
+        };
+    }
+
+    for(const Plane& plane : scene.planes){
+        if(intersectPlane(ray, plane, scene.vertices, hitRecord)){
+            if(isShadowRay){
+                return true;
+            }
+            hit = true;
+        };
+    }
+
+    for(const Triangle& triangle : scene.triangles){
+        if(intersectTriangle(ray, triangle, scene.vertices, isShadowRay, hitRecord)){
+            if(isShadowRay){
+                return true;
+            }
+            hit = true;
+        };
+    }
+
+    for(const Mesh& mesh : scene.meshes){
+        for(const Triangle& triangle : mesh.faces){
+            if(intersectTriangle(ray, triangle, scene.vertices, isShadowRay, hitRecord)){
+                if(isShadowRay){
+                    return true;
+                }
+                hit = true;
+            };
+        }
+    }
+
+    for(const Sphere& Sphere : scene.spheres){
+        if(intersectSphere(ray, Sphere, scene.vertices, hitRecord)){
+            if(isShadowRay){
+                return true;
+            }
+            hit = true;
+        };
+    }
+
+    return hit;
 }
