@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -pthread
 LDFLAGS  = -pthread
 
 TARGET   = raytracer
-OBJS     = raytracer.o intersect.o scene_io.o
+OBJS     = raytracer.o intersect.o scene_io.o Vec3f.o
 
 all: $(TARGET)
 
@@ -18,6 +18,9 @@ intersect.o: intersect.cpp raytracer.hpp scene_io.h
 
 scene_io.o: scene_io.cpp scene_io.h json.hpp
 	$(CXX) $(CXXFLAGS) -c scene_io.cpp -o scene_io.o
+
+Vec3f.o: Vec3f.cpp raytracer.hpp scene_io.h
+		$(CXX) $(CXXFLAGS) -c Vec3f.cpp -o Vec3f.o
 
 clean:
 	rm -f $(OBJS) $(TARGET)

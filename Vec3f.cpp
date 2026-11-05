@@ -3,6 +3,8 @@
 #include <cmath>
 
 
+Ray::Ray(Vec3f o, Vec3f d) : origin(o), direction(d) {}
+
 Vec3f normalize(Vec3f v){
     Vec3f vector;
     float howBig = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
