@@ -12,7 +12,7 @@ struct CameraBasis {
     public: CameraBasis(const Camera& camera)
     {
         v = normalize(camera.up);
-        w = -1 * normalize(camera.gaze);
+        w = -1.0f * normalize(camera.gaze);
         u = normalize(cross(v, w));
         v = cross(w, u); // this and line above enforce that basis vectors are orthagonal.
         position = camera.position;
@@ -50,11 +50,12 @@ int main(int argc, char* argv[])
     Scene scene;
     //int camNo = 1;
     loadSceneFromJson(argv[1], scene);
+    preprocessScene(scene);
 
     for(const Camera& cam : scene.cameras)
     {
         std::vector<Vec3i> pixelmap;
-        pixelmap.reserve(cam.imageWidth * cam.imageHeight);
+        pixelmap.resize(cam.imageWidth * cam.imageHeight);
         //std::string filename = argv[1] + "Cam" + std::to_string(camNo++);
 
         CameraBasis camBasis(cam);
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
                 
                 Ray ray(cam.position, normalize(targetPoint - cam.position));
                 Vec3i pixel = Clamp(computeColor(scene, ray, 0));
-                pixelmap.push_back(pixel);
+                pixelmap[j * cam.imageWidth + i] = (pixel);
             }
         }
 
@@ -108,7 +109,7 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         HitRecord shadowHit;
         Ray shadowRay(hit.point + scene.shadowRayEpsilon * hit.normal, lightNormal);
         
-        Vec3f view = -1 * ray.direction;
+        Vec3f view = -1.0f * ray.direction;
 
         if(!intersectScene(scene, shadowRay, shadowHit, true) || shadowHit.time >= distance)
         {
@@ -121,10 +122,14 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
             diffuseApplied = diffuseApplied + diffuse;
             
             Vec3f halfwayVector = normalize(view + lightNormal);
+            float nDotL = dot(hit.normal, lightNormal);
             
-            Vec3f compSpecular = componentWiseMult(material.specularReflectance, irradiance);
-            Vec3f specular = pow(std::max(0.0f, dot(hit.normal, halfwayVector)), material.phongExponent) * compSpecular;
-            specularApplied = specularApplied + specular;
+            if(nDotL > 0.0f)
+            {
+                Vec3f compSpecular = componentWiseMult(material.specularReflectance, irradiance);
+                Vec3f specular = pow(std::max(0.0f, dot(hit.normal, halfwayVector)), material.phongExponent) * compSpecular;
+                specularApplied = specularApplied + specular;
+            }
         }
     }
 
@@ -132,9 +137,9 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
 
     if (material.isMirror && depth < scene.maxRecursionDepth)
     {
-        Vec3f reflectionDir = normalize(ray.direction - 2 * (dot(ray.direction, hit.normal) * hit.normal));
+        Vec3f reflectionDir = normalize(ray.direction - 2.0f * (dot(ray.direction, hit.normal) * hit.normal));
         Ray reflectionRay(hit.point + scene.shadowRayEpsilon * hit.normal, reflectionDir);
-        Vec3f mirror = componentWiseMult(computeColor(scene, reflectionRay, ++depth), material.mirrorReflectance);
+        Vec3f mirror = componentWiseMult(computeColor(scene, reflectionRay, depth + 1), material.mirrorReflectance);
         color = color + mirror;
     }
     
