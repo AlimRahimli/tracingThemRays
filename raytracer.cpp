@@ -115,7 +115,7 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         return zero;
     }
     
-    Material &material = scene.materials[hit.materialID];
+    Material material = scene.materials[hit.materialID];
     
     Vec3f ambientApplied = componentWiseMult(material.ambientReflectance, scene.ambientLight);
     
