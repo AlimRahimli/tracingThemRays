@@ -115,13 +115,15 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         return zero;
     }
     
-    Material material = scene.materials[hit.materialID];
+    Material material& = scene.materials[hit.materialID];
     
     Vec3f ambientApplied = componentWiseMult(material.ambientReflectance, scene.ambientLight);
     
     Vec3f diffuseApplied;
     Vec3f specularApplied;
     
+    Vec3f view = -1.0f * ray.direction;
+
     for(const PointLight& light : scene.pointLights)
     {
         Vec3f lightUnnormal = light.position - hit.point;
@@ -129,9 +131,8 @@ Vec3f computeColor(const Scene& scene, const Ray& ray, int depth)
         Vec3f lightNormal = normalize(lightUnnormal);
         
         HitRecord shadowHit;
+        shadowHit.time = distance;
         Ray shadowRay(hit.point + scene.shadowRayEpsilon * hit.normal, lightNormal);
-        
-        Vec3f view = -1.0f * ray.direction;
         
         if(!intersectScene(scene, shadowRay, shadowHit, true) || shadowHit.time >= distance)
         {
